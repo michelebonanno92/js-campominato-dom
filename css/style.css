@@ -40,8 +40,24 @@ main{
 
   #grid-container > .clicked{
    background-color:lightcoral;
-  
   }
+
+  #grid-container > .difficulty-one{
+   width: 100px ;
+   height:  100px ;
+  }
+
+  #grid-container > .difficulty-two{
+   width: calc(1000px / 9 );
+   height: calc(1000px / 9 );
+
+  }
+
+  #grid-container > .difficulty-three{
+   width: calc(1000px / 7 );
+   height: calc(1000px / 7 );
+  }
+  
  /* 
  Header
   */
@@ -67,4 +83,9 @@ main{
    border-radius: 20px;
    font-weight: bold;
    font-size: 1.5rem;
+   cursor: pointer;
+  }
+
+  option{
+   cursor: pointer;
   }
