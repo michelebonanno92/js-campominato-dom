@@ -42,16 +42,33 @@ startButton.addEventListener('click', function(){
 
     gridContainer.innerHTML = '' ; 
     
+    // creata variabile constante delle bombe
+    const bombs = [];
+    // creato ciclo definito for perchè sappiamo che le bombe sono 16 sul grado di difficoltà ( 100,81,49)
+    // for ( let i = 0 ; i < 16; i++){
+    // cambiamo tipo di ciclo da definito a inedefinito while perchè per evitare di non avere doppioni usiamo l'if con includes ma non sapendo che con solo 16 iterazioni non arriviamo sicuro a generare le 16 bombe allora usiamo il while mettendo come condizione la lunghezza dell'array così anche facendo più di 16 iterazioni con doppioni si fermerà a 16 bombe e senza doppioni ;
+    while ( bombs.length < 16 ) {
+
+            // creata nuova variabile constante per il numero generato dal ciclo e 
+        const randomNumber = generateRandomNumber(1, cellsNumber);
+        // console.log('randomNumber', randomNumber , typeof randomNumber );
+
+         if (!bombs.includes(randomNumber) ){
+        //  if (bombs.includes(randomNumber)==false){
+        //  if (!(bombs.includes(randomNumber) == true)){
+
+            bombs.push(randomNumber);
+         }
+        
+
+    }
+        
+    console.log('bombs', bombs , typeof bombs );
+
 
     for (let i = 1; i <= cellsNumber ; i++) {
 
-     /* 
-        per creare un nuovo elemento HTML , abbiamo due strade :
-        1) 
-        con document.createElement -> in questo caso specifico ci conviene usa document.createElement perchè dovremo selezionare l'elemento per intercettarne il click (per metterlo in ascolto dell'evento con addEvenListener )
-        2)
-        con una stringa e innerHTML 
-     */
+
     const cell = document.createElement('div');
     cell.innerHTML = i ; 
     gridContainer.append(cell);
@@ -78,38 +95,18 @@ startButton.addEventListener('click', function(){
         console.log('la cella cliccata è la numero : ' + this.innerHTML);
 
     })
-
-    // cell.addEventListener('click', () => {
-    //     // console.log('this arrow' , this , typeof this );
-
-    // })
  }
 
 })
+// definita funzione per generare un numero random tra un minimo e un massimo ( massimo compreso)
+function generateRandomNumber(min, max) {
+   return Math.floor(Math.random() * (max - min + 1) ) + 1; 
+  }
+ 
 
 
-for(let i = array.length; i > 0; i--) {
-    console.log(array[i]);
-}
 
 
 
 
-
-// const cells = parseInt(100);
-// console.log('cells', cells, typeof cells);
-
-
-// const myRow = document.getElementById('my-row');
-
-// for (let i = 0; i < cells ; i++) {
-//     const cell = document.createElement('div');
-//     cell.innerHTML = i + 1 ;
-   
-//     cell.addEventListener('click', function () {
-//         cell.classList.toggle('color');
-//     })
-
-//     myRow.append(cell);
-// }
 
