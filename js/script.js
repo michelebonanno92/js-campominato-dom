@@ -1,4 +1,4 @@
-/* ` ` ~
+/* ` ` ~ .sort((a,b) => a - b) per ordinare numeri in ordine crescente
 Consegna
 Copiamo la griglia fatta ieri nella nuova repo e aggiungiamo la logica del gioco (attenzione: non bisogna copiare tutta la cartella dell'esercizio ma solo l'index.html, e le cartelle js/ css/ con i relativi script e fogli di stile, per evitare problemi con l'inizializzazione di git).
 Il computer deve generare 16 numeri casuali nello stesso range della difficoltà prescelta: le bombe. Attenzione: nella stessa cella può essere posizionata al massimo una bomba, perciò nell'array delle bombe non potranno esserci due numeri uguali.
@@ -20,6 +20,9 @@ Le validazioni e i controlli possiamo farli anche in un secondo momento.
 
 const startButton = document.getElementById('start-button');
 
+// let points = 0 ; 
+// let clickedBomb = false ; 
+
 startButton.addEventListener('click', function(){
 
     const gridContainer = document.getElementById('grid-container');
@@ -29,7 +32,7 @@ startButton.addEventListener('click', function(){
     // console.log("difficoltà del gioco:", diffSelect.value);
 
 
-    let cellsNumber = 100;
+    let cellsNumber = 17;
 
     if ( diffSelect == "2" ) {
         cellsNumber = 81; 
@@ -43,17 +46,19 @@ startButton.addEventListener('click', function(){
     gridContainer.innerHTML = '' ; 
     
     // creata variabile constante delle bombe
-    const bombs = [];
+   
     // creato ciclo definito for perchè sappiamo che le bombe sono 16 sul grado di difficoltà ( 100,81,49)
     // for ( let i = 0 ; i < 16; i++){
     // cambiamo tipo di ciclo da definito a inedefinito while perchè per evitare di non avere doppioni usiamo l'if con includes ma non sapendo che con solo 16 iterazioni non arriviamo sicuro a generare le 16 bombe allora usiamo il while mettendo come condizione la lunghezza dell'array così anche facendo più di 16 iterazioni con doppioni si fermerà a 16 bombe e senza doppioni ;
-    while ( bombs.length < 16 ) {
+    const bombs = [];
+    const bombsNumber = parseInt(16);
+    while ( bombs.length < bombsNumber ) {
 
             // creata nuova variabile constante per il numero generato dal ciclo e 
         const randomNumber = generateRandomNumber(1, cellsNumber);
         // console.log('randomNumber', randomNumber , typeof randomNumber );
 
-         if (!bombs.includes(randomNumber) ){
+         if (!bombs.includes(randomNumber)){
         //  if (bombs.includes(randomNumber)==false){
         //  if (!(bombs.includes(randomNumber) == true)){
 
@@ -63,7 +68,7 @@ startButton.addEventListener('click', function(){
 
     }
         
-    console.log('bombs', bombs , typeof bombs );
+    console.log('bombs', bombs.sort((a , b ) => a - b ) , typeof bombs,  );
 
 
     for (let i = 1; i <= cellsNumber ; i++) {
@@ -87,7 +92,64 @@ startButton.addEventListener('click', function(){
 
     cell.addEventListener('click' , function() {
         // console.log('this' , this , typeof this );
-        this.classList.toggle('clicked');
+        // si può rimuovere un addEventListener con "RemoveEventListener" ma ci conviene usarlo solo quando abbiamo una funzione che ha un nome e non adesso che abbiamo una  funzione anonima : cell.removeEventListener('click', funz....)
+         /* 
+            che vuol dire che la partita è terminata ?
+            -se una delle celle ha la classe bomb
+              - altra possibilità mi salvo da qualce parte l'informazione  di aver cliccato su una bomba
+            - se ho cliccato su tuttel le celle NON bomba -> il numero di celle che ha la classe not-bomb è uguale a cellNumber - bombsNumber 
+                    -altra possibilità mi salvo da qualche parte i click che ho fatto 
+            soluzioni :
+            1)termino o se la variabile clickedBomb è a true o se points == cellNumber - bombsNumber 
+            2)  termino o se il numero di celle con classe bomb > 0 o se il numero di celle con classe not-bomb == cellsNumber - bombsNumber 
+                - non è terminata se il numero di celle con classe bomb == 0 e il numero di celle con classe not-bomb è < di cellNumber - bombsNumber 
+        */  
+        const cellWithBombClass = document.querySelectorAll('.bomb');
+        const cellWithNotBombClass = document.querySelectorAll('.not-bomb');
+        console.log('numero di celle con classe not-bomb', cellWithNotBombClass.length)
+
+        // la partita non è terminata quindi 
+        if( cellWithBombClass.length == 0 
+            && 
+            cellWithNotBombClass.length < cellsNumber - bombsNumber
+        ){
+            const cellNumber = parseInt(this.innerText);
+            if (bombs.includes(cellNumber)){
+                // con toggle ativo primo click e disattivo con secondo click
+            // this.classList.toggle('bomb');
+            // clickedBomb = true ;
+            this.classList.add('bomb');
+
+            document.getElementById('msg-container').innerHTML = ('Hai cliccato una bomba e hai perso ! il tuo punteggio è : ' + cellWithNotBombClass.length );
+
+            // alert('Hai cliccato una bomba e hai perso ! il tuo punteggio è : ' + cellWithNotBombClass.length );
+            }
+            else {
+                // con add aggiungo semplicemente la classe e viene mantenuta al click 
+                // points++;
+                // points += 1 ; 
+                // points = points + 1 ; 
+                this.classList.add('not-bomb');
+
+                if (( cellWithNotBombClass.length + 1 ) == cellsNumber - bombsNumber ){
+                // if (( cellWithNotBombClass.length + 1 )== cellsNumber - bombsNumber -1 ){
+
+                document.getElementById('msg-container').innerHTML = (' hai cliccato su tutte le celle non bomba, hai vinto complimenti ! Il tuo punteggio è : ' + (cellWithNotBombClass.length + 1 ));
+            }
+          
+
+
+                //     alert('hai cliccato su tutte le celle non bomba, hai vinto complimenti !il tuo punteggio è :' + (cellWithNotBombClass.length + 1 ));
+                // }
+              
+
+          
+            }
+        }
+        else{
+            // alert('Il gioco è terminato')
+        }
+       
         // console.log(this);
         // console.log(this.innerHTML);
         // console.log(this.textContent);
@@ -102,6 +164,7 @@ startButton.addEventListener('click', function(){
 function generateRandomNumber(min, max) {
    return Math.floor(Math.random() * (max - min + 1) ) + 1; 
   }
+
  
 
 

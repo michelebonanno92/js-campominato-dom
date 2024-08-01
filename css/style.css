@@ -28,6 +28,13 @@ main{
    cursor: pointer;
   }
 
+ #msg-container{
+   text-align: center;
+   margin: 40px 0 ;
+   font-size: 2rem;
+   font-weight: bold;
+ }
+
   #grid-container > * {
    width: 100px; 
    height: 100px ; 
@@ -38,9 +45,15 @@ main{
    align-items: center;
   }
 
-  #grid-container > .clicked{
-   background-color:lightcoral;
+  #grid-container > .bomb{
+   background-color:red;
   }
+
+  #grid-container > .not-bomb{
+   background-color:skyblue;
+  }
+
+
 
   #grid-container > .difficulty-one{
    width: 100px ;
